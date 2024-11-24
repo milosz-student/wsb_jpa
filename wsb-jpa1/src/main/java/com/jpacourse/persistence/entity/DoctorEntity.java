@@ -2,14 +2,8 @@ package com.jpacourse.persistence.entity;
 
 import com.jpacourse.persistence.enums.Specialization;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "DOCTOR")
@@ -36,6 +30,14 @@ public class DoctorEntity {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Specialization specialization;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // relacja jednokierunkowa -> 1 do 1 od strony rodzica
+	@JoinColumn(name = "ADDRESS_ID", nullable = false) // klucz obcy w encji nadrzednej czyli u doktora
+	private AddressEntity address;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // relacja dwukierunkowa? 1 do wielu od strony rodzica
+	@JoinColumn(name = "DOCTOR_ID", nullable = false) // klucz obcy w encji podrzędnej czyli w wizycie
+	private List<VisitEntity> visits;
 
 	public Long getId() {
 		return id;
