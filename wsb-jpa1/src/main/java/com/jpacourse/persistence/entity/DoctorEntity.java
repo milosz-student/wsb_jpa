@@ -35,8 +35,7 @@ public class DoctorEntity {
 	@JoinColumn(name = "ADDRESS_ID", nullable = false) // klucz obcy w encji nadrzednej czyli u doktora
 	private AddressEntity address;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // relacja dwukierunkowa? 1 do wielu od strony rodzica
-	@JoinColumn(name = "DOCTOR_ID", nullable = false) // klucz obcy w encji podrzędnej czyli w wizycie
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY) // relacja dwukierunkowa 1 do wielu od strony rodzica
 	private List<VisitEntity> visits;
 
 	public Long getId() {

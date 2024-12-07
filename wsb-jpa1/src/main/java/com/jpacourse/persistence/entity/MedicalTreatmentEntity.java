@@ -3,6 +3,7 @@ package com.jpacourse.persistence.entity;
 import com.jpacourse.persistence.enums.TreatmentType;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "MEDICAL_TREATMENT")
@@ -17,9 +18,6 @@ public class MedicalTreatmentEntity {
 
 	@Enumerated(EnumType.STRING)
 	private TreatmentType type;
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // relacja dwustronna wiele do 1 od strony dziecka
-	private VisitEntity visit;
 
 	public Long getId() {
 		return id;

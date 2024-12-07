@@ -18,9 +18,17 @@ public class VisitEntity {
 	@Column(nullable = false)
 	private LocalDateTime time;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // relacja dwukierunkowa -> 1 do wielu od strony rodzica
-	@JoinColumn(name = "VISIT_ID")  // klucz obcy w encji podrzędnej czyli w medical treatment
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // relacja jednostronna -> 1 do wielu od strony rodzica
+	@JoinColumn(name = "VISIT_ID")  // klucz obcy w encji podrzednej czyli w medical treatment
 	private List<MedicalTreatmentEntity> medicalTreatments;
+
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JoinColumn(name = "DOCTOR_ID", nullable = false)
+	private DoctorEntity doctor;
+
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JoinColumn(name = "PATIENT_ID", nullable = false)
+	private PatientEntity patient;
 
 	public Long getId() {
 		return id;
