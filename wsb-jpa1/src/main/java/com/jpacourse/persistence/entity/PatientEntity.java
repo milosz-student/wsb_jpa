@@ -37,6 +37,9 @@ public class PatientEntity {
 	@OneToMany(mappedBy = "patient", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY) // relacja dwukierunkowa 1 do wielu od strony rodzica
 	private List<VisitEntity> visits;
 
+	@Column
+	private Boolean isAdult;
+
 	public Long getId() {
 		return id;
 	}
