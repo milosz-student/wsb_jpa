@@ -83,4 +83,14 @@ public class PatientTO implements Serializable {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+    public AddressEntity getAddress() { return address; }
+
+    public void setAddress(AddressEntity address) {this.address = address;}
+
+    public void setVisits(List<VisitTO> visits) { this.visits = visits; }
+
+    public Boolean getIsAdult() { return isAdult; }
+
+    public void setIsAdult(Boolean isAdult) { this.isAdult = isAdult; }
 }
