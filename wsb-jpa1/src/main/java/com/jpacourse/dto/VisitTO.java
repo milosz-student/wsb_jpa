@@ -1,7 +1,6 @@
 package com.jpacourse.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jpacourse.persistence.entity.MedicalTreatmentEntity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

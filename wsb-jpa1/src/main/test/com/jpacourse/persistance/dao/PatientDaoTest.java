@@ -14,9 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,6 +32,9 @@ public class PatientDaoTest
 
     @Autowired
     private AddressDao addressDao;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Transactional
     @Test
@@ -100,6 +105,56 @@ public class PatientDaoTest
 
         assertThat(testDoctor).isNotNull();
         assertThat(testDoctor.getFirstName()).isEqualTo("Alicja");
+    }
+
+    @Transactional
+    @Test
+    public void testAddVisitToPatient() {
+        // Given
+        AddressEntity testAddress = new AddressEntity();
+        testAddress.setAddressLine1("xx");
+        testAddress.setAddressLine2("yy");
+        testAddress.setCity("city");
+        testAddress.setPostalCode("62-030");
+        addressDao.save(testAddress);
+
+        DoctorEntity doctor = new DoctorEntity();
+        doctor.setAddress(testAddress);
+        doctor.setFirstName("Alicja");
+        doctor.setLastName("Madrowska");
+        doctor.setSpecialization(Specialization.SURGEON);
+        doctor.setDoctorNumber("D567");
+        doctor.setTelephoneNumber("123456789");
+        entityManager.persist(doctor);
+
+        PatientEntity patient = new PatientEntity();
+        patient.setAddress(testAddress);
+        patient.setFirstName("Jan");
+        patient.setLastName("Kowalski");
+        patient.setDateOfBirth(LocalDate.of(1985, 1, 15));
+        patient.setTelephoneNumber("987654321");
+        patient.setPatientNumber("P123");
+        patient.setIsAdult(true);
+        patient.setVisits(new ArrayList<>());
+        entityManager.persist(patient);
+
+        LocalDateTime visitTime = LocalDateTime.of(2024, 11, 24, 10, 0, 0);
+        String description = "wizyta NFZ";
+
+        // When
+        patientDao.addVisitToPatient(patient.getId(), doctor.getId(), visitTime, description);
+
+        // Then
+        PatientEntity updatedPatient = entityManager.find(PatientEntity.class, patient.getId());
+        assertThat(updatedPatient.getVisits()).isNotEmpty();
+
+        VisitEntity visit = updatedPatient.getVisits().stream()
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Visit not found"));
+        assertThat(visit.getTime()).isEqualTo(visitTime);
+        assertThat(visit.getDescription()).isEqualTo(description);
+        assertThat(visit.getDoctor().getFirstName()).isEqualTo("Alicja");
+        assertThat(visit.getDoctor().getLastName()).isEqualTo("Madrowska");
     }
 
 }
