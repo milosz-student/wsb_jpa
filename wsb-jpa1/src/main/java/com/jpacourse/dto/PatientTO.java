@@ -91,4 +91,7 @@ public class PatientTO implements Serializable {
     public Boolean getIsAdult() { return isAdult; }
 
     public void setIsAdult(Boolean isAdult) { this.isAdult = isAdult; }
+
+    public List<VisitTO> getVisits() { return visits; }
+
 }

@@ -94,4 +94,6 @@ public class DoctorEntity {
 		this.specialization = specialization;
 	}
 
+	public void setAddress(AddressEntity address) { this.address = address; }
+
 }

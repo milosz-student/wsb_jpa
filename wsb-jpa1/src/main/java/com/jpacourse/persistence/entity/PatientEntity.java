@@ -106,4 +106,6 @@ public class PatientEntity {
 
 	public void setIsAdult(Boolean isAdult) { this.isAdult = isAdult; }
 
+	public void setVisits(List<VisitEntity> visits) { this.visits = visits; }
+
 }

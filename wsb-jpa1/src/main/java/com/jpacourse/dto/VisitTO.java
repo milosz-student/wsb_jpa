@@ -36,4 +36,9 @@ public class VisitTO implements Serializable {
     public void setDoctorFirstName(String doctorFirstName) { this.doctorFirstName = doctorFirstName; }
 
     public void setDoctorLastName(String doctorLastName) { this.doctorLastName = doctorLastName; }
+
+    public String getDoctorFirstName() { return doctorFirstName; }
+
+    public String getDoctorLastName() { return doctorLastName; }
+
 }

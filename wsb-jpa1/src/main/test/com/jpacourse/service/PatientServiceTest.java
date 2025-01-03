@@ -1,17 +1,13 @@
-package com.jpacourse.persistance.dao;
+package com.jpacourse.service;
 
-import com.jpacourse.persistence.dao.AddressDao;
+import com.jpacourse.dto.PatientTO;
 import com.jpacourse.persistence.dao.PatientDao;
-import com.jpacourse.persistence.entity.AddressEntity;
-import com.jpacourse.persistence.entity.DoctorEntity;
-import com.jpacourse.persistence.entity.PatientEntity;
-import com.jpacourse.persistence.entity.VisitEntity;
+import com.jpacourse.persistence.entity.*;
 import com.jpacourse.persistence.enums.Specialization;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.jpacourse.persistence.enums.TreatmentType;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -21,37 +17,24 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
-public class PatientDaoTest
-{
+public class PatientServiceTest {
+
+    @Autowired
+    private PatientService patientService;
+
     @Autowired
     private PatientDao patientDao;
 
-    @Autowired
-    private AddressDao addressDao;
-
-    @Transactional
     @Test
-    public void testShouldFindAddressById() {
-        // given
-        // when
-        PatientEntity patientEntity = patientDao.findOne(2L);
-        // then
-        assertThat(patientEntity).isNotNull();
-        assertThat(patientEntity.getFirstName()).isEqualTo("Ewa");
-    }
-
     @Transactional
-    @Test
-    public void testDeletePatient() {
+    public void testFindPatientById() {
         // given
         AddressEntity testAddress = new AddressEntity();
         testAddress.setAddressLine1("xx");
         testAddress.setAddressLine2("yy");
         testAddress.setCity("city");
         testAddress.setPostalCode("62-030");
-        addressDao.save(testAddress);
 
         DoctorEntity testDoctor = new DoctorEntity();
         testDoctor.setFirstName("Alicja");
@@ -70,7 +53,6 @@ public class PatientDaoTest
         testPatient.setEmail("jan.kowal@wp.com");
         testPatient.setDateOfBirth(LocalDate.of(1985, 1, 15));
         testPatient.setIsAdult(true);
-
         testPatient.setAddress(testAddress);
 
         VisitEntity testVisit = new VisitEntity();
@@ -79,27 +61,38 @@ public class PatientDaoTest
         testVisit.setDescription("wizyta NFZ");
         testVisit.setTime(LocalDateTime.parse("2024-11-24 10:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
+        MedicalTreatmentEntity testTreatment = new MedicalTreatmentEntity();
+        testTreatment.setDescription("test1");
+        testTreatment.setType(TreatmentType.USG);
+
+        testVisit.setTreatments(List.of(testTreatment));
         testPatient.setVisits(List.of(testVisit));
 
         patientDao.save(testPatient);
 
         // when
-        PatientEntity existingPatient = patientDao.findOne(testPatient.getId());
-        assertThat(existingPatient).isNotNull();
-        assertThat(existingPatient.getVisits()).isNotNull();
-        assertThat(existingPatient.getVisits()).isNotEmpty();
-
-        patientDao.delete(testPatient);
+        PatientTO patientTO = patientService.findById(testPatient.getId());
 
         // then
-        PatientEntity deletedPatient = patientDao.findOne(testPatient.getId());
-        assertThat(deletedPatient).isNull();
+        assertThat(patientTO).isNotNull();
+        assertThat(patientTO.getFirstName()).isEqualTo("Jan");
+        assertThat(patientTO.getLastName()).isEqualTo("Kowalski");
+        assertThat(patientTO.getTelephoneNumber()).isEqualTo("123456789");
+        assertThat(patientTO.getAddress().getAddressLine1()).isEqualTo("xx");
+        assertThat(patientTO.getAddress().getAddressLine2()).isEqualTo("yy");
+        assertThat(patientTO.getAddress().getCity()).isEqualTo("city");
+        assertThat(patientTO.getAddress().getPostalCode()).isEqualTo("62-030");
+        assertThat(patientTO.getEmail()).isEqualTo("jan.kowal@wp.com");
+        assertThat(patientTO.getPatientNumber()).isEqualTo("P123");
+        assertThat(patientTO.getDateOfBirth().isEqual(LocalDate.of(1985, 1, 15)));
+        assertThat(patientTO.getIsAdult()).isEqualTo(true);
+        assertThat(patientTO.getVisits()).isNotEmpty();
 
-        PatientEntity patientWithVisits = patientDao.findOne(testPatient.getId());
-        assertThat(patientWithVisits).isNull();
-
-        assertThat(testDoctor).isNotNull();
-        assertThat(testDoctor.getFirstName()).isEqualTo("Alicja");
+        patientTO.getVisits().forEach(visit -> {
+            assertThat(visit.getTime()).isEqualTo(LocalDateTime.of(2024, 11, 24, 10, 0, 0));
+            assertThat(visit.getDoctorFirstName()).isEqualTo("Alicja");
+            assertThat(visit.getDoctorLastName()).isEqualTo("Madrowska");
+            assertThat(visit.getMedicalTreatments()).contains("USG");
+        });
     }
-
 }
