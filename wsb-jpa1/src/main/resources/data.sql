@@ -11,10 +11,10 @@ INSERT INTO patient (id, first_name, last_name, telephone_number, email, patient
 VALUES (2, 'Ewa', 'Dąb', '987654321', 'ewa.dab@onet.com', 'P124', '1990-05-10', 2, False);
 
 INSERT INTO doctor (id, first_name, last_name, telephone_number, email, doctor_number, specialization, address_id)
-VALUES (1, 'Alicja', 'Madrowska', '456123789', 'alicja@example.com', 'D567', 'CARDIOLOGIST', 1);
+VALUES (1, 'Alicja', 'Madrowska', '456123789', 'alicja@example.com', 'D567', 'SURGEON', 1);
 
 INSERT INTO doctor (id, first_name, last_name, telephone_number, email, doctor_number, specialization, address_id)
-VALUES (2, 'Krzysztof', 'Lewandowski', '321654987', 'krzysztof123@example.com', 'D568', 'NEUROLOGIST', 2);
+VALUES (2, 'Krzysztof', 'Lewandowski', '321654987', 'krzysztof123@example.com', 'D568', 'OCULIST', 2);
 
 INSERT INTO visit (id, description, time, patient_id, doctor_id)
 VALUES (1, 'wizyta NFZ', '2024-11-24 10:00:00', 1, 1);

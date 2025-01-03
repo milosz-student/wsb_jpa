@@ -30,7 +30,7 @@ public class PatientEntity {
 	@Column(nullable = false)
 	private LocalDate dateOfBirth;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // relacja jednokierunkowa -> 1 do 1 od strony rodzica
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // relacja jednokierunkowa -> 1 do 1 od strony rodzica
 	@JoinColumn(name = "ADDRESS_ID", nullable = false) // klucz obcy w encji nadrzednej czyli u pacjenta
 	private AddressEntity address;
 

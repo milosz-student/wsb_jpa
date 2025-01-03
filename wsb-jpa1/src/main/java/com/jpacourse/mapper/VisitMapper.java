@@ -1,7 +1,11 @@
 package com.jpacourse.mapper;
 
 import com.jpacourse.dto.VisitTO;
+import com.jpacourse.persistence.entity.DoctorEntity;
 import com.jpacourse.persistence.entity.VisitEntity;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class VisitMapper {
@@ -12,12 +16,17 @@ public class VisitMapper {
             return null;
         }
         final VisitTO visitTO = new VisitTO();
-        visitTO.setId(visitEntity.getId());
-        visitTO.setDescription(visitEntity.getDescription());
+
         visitTO.setTime(visitEntity.getTime());
-        visitTO.setMedicalTreatments(visitEntity.getMedicalTreatments());
-        visitTO.setDoctor(visitEntity.getDoctor());
-        visitTO.setPatient(visitEntity.getPatient());
+
+        DoctorEntity doctorEntity = visitEntity.getDoctor();
+        visitTO.setDoctorFirstName(doctorEntity.getFirstName());
+        visitTO.setDoctorLastName(doctorEntity.getLastName());
+
+        List<String> medicalTreatments = visitEntity.getMedicalTreatments().stream()
+                        .map(t -> t.getType().name())
+                        .collect(Collectors.toList());
+        visitTO.setMedicalTreatments(medicalTreatments);
 
         return visitTO;
     }
