@@ -22,6 +22,18 @@ VALUES (1, 'wizyta NFZ', '2024-11-24 10:00:00', 1, 1);
 INSERT INTO visit (id, description, time, patient_id, doctor_id)
 VALUES (2, 'wizyta NFZ', '2024-11-25 14:30:00', 2, 2);
 
+INSERT INTO visit (id, description, time, patient_id, doctor_id)
+VALUES (3, 'wizyta prywatna', '2024-12-24 10:00:00', 1, 1);
+
+INSERT INTO visit (id, description, time, patient_id, doctor_id)
+VALUES (4, 'wizyta prywatna', '2024-12-25 14:30:00', 2, 2);
+
+INSERT INTO visit (id, description, time, patient_id, doctor_id)
+VALUES (5, 'wizyta NFZ', '2025-12-30 10:00:00', 2, 1);
+
+INSERT INTO visit (id, description, time, patient_id, doctor_id)
+VALUES (6, 'wizyta NFZ', '2025-12-31 14:30:00', 2, 2);
+
 INSERT INTO medical_treatment (id, description, type, visit_id)
 VALUES (1, 'test1', 'USG', 1);
 
