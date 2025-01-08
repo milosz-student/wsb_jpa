@@ -19,7 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -155,6 +157,131 @@ public class PatientDaoTest
         assertThat(visit.getDescription()).isEqualTo(description);
         assertThat(visit.getDoctor().getFirstName()).isEqualTo("Alicja");
         assertThat(visit.getDoctor().getLastName()).isEqualTo("Madrowska");
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientById_shouldReturn2Patients() {
+        //given
+        final String patientLastName = "Kowal";
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByLastName(patientLastName);
+
+        //then
+        assertThat(patients).isNotEmpty();
+        assertThat(patients.size()).isEqualTo(2);
+        assertThat(patients.stream().sorted(Comparator.comparing(PatientEntity::getId)).collect(Collectors.toList())
+                .get(0).getId()).isEqualTo(1L);
+        assertThat(patients.stream().sorted(Comparator.comparing(PatientEntity::getId)).collect(Collectors.toList())
+                .get(1).getId()).isEqualTo(3L);
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientById_shouldReturn1Patient() {
+        //given
+        final String patientLastName = "ab";
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByLastName(patientLastName);
+
+        //then
+        assertThat(patients).isNotEmpty();
+        assertThat(patients.size()).isEqualTo(1);
+        assertThat(patients.get(0).getId()).isEqualTo(2L);
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientById_shouldReturnEmptyList() {
+        //given
+        final String patientLastName = "aaaaaaaaaaaaaaaaaaaaa";
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByLastName(patientLastName);
+
+        //then
+        assertThat(patients).isEmpty();
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientsByMinNumberOfVisits_shouldReturn1Patient() {
+        //given
+        final long minNumberOfPatientVisits = 2;
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByMinNumberOfVisits(minNumberOfPatientVisits);
+
+        //then
+        assertThat(patients).isNotEmpty();
+        assertThat(patients.size()).isEqualTo(1);
+        assertThat(patients.get(0).getId()).isEqualTo(2L);
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientsByMinNumberOfVisits_shouldReturn2Patients() {
+        //given
+        final long minNumberOfPatientVisits = 1;
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByMinNumberOfVisits(minNumberOfPatientVisits);
+
+        //then
+        assertThat(patients).isNotEmpty();
+        assertThat(patients.size()).isEqualTo(2);
+        assertThat(patients.stream().sorted(Comparator.comparing(PatientEntity::getId)).collect(Collectors.toList())
+                .get(0).getId()).isEqualTo(1L);
+        assertThat(patients.stream().sorted(Comparator.comparing(PatientEntity::getId)).collect(Collectors.toList())
+                .get(1).getId()).isEqualTo(2L);
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientsByMinNumberOfVisits_shouldReturnEmptyList() {
+        //given
+        final long minNumberOfPatientVisits = 100;
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByMinNumberOfVisits(minNumberOfPatientVisits);
+
+        //then
+        assertThat(patients).isEmpty();
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientsByIsAdult_shouldReturn2Patients() {
+        //given
+        final Boolean isPatientAdult = true;
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByIsAdult(isPatientAdult);
+
+        //then
+        assertThat(patients).isNotEmpty();
+        assertThat(patients.size()).isEqualTo(2);
+        assertThat(patients.stream().sorted(Comparator.comparing(PatientEntity::getId)).collect(Collectors.toList())
+                .get(0).getId()).isEqualTo(1L);
+        assertThat(patients.stream().sorted(Comparator.comparing(PatientEntity::getId)).collect(Collectors.toList())
+                .get(1).getId()).isEqualTo(3L);
+    }
+
+    @Transactional
+    @Test
+    public void testFindPatientsByIsAdult_shouldReturn1Patient() {
+        //given
+        final Boolean isPatientAdult = false;
+
+        //when
+        final List<PatientEntity> patients = patientDao.findPatientsByIsAdult(isPatientAdult);
+
+        //then
+        assertThat(patients).isNotEmpty();
+        assertThat(patients.size()).isEqualTo(1);
+        assertThat(patients.get(0).getId()).isEqualTo(2L);
     }
 
 }
