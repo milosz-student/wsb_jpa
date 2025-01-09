@@ -1,11 +1,11 @@
-INSERT INTO address (id, address_line1, address_line2, city, postal_code)
-VALUES (1, 'xx', 'yy', 'city', '62-030');
+INSERT INTO address (id, address_line1, address_line2, city, postal_code, version)
+VALUES (1, 'xx', 'yy', 'city', '62-030', '0');
 
-INSERT INTO address (id, address_line1, address_line2, city, postal_code)
-VALUES (2, 'aa', 'bb', 'another_city', '00-100');
+INSERT INTO address (id, address_line1, address_line2, city, postal_code, version)
+VALUES (2, 'aa', 'bb', 'another_city', '00-100', '0');
 
-INSERT INTO address (id, address_line1, address_line2, city, postal_code)
-VALUES (3, 'cc', 'dd', 'big_city', '00-111');
+INSERT INTO address (id, address_line1, address_line2, city, postal_code, version)
+VALUES (3, 'cc', 'dd', 'big_city', '00-111', '0');
 
 INSERT INTO patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, address_id, is_adult)
 VALUES (1, 'Jan', 'Kowalski', '123456789', 'jan.kowal@wp.com', 'P123', '1985-01-15', 1, True);
