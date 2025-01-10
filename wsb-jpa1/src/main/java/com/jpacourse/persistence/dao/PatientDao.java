@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface PatientDao extends Dao<PatientEntity, Long> {
 
-    public void addVisitToPatient(Long patientId, Long doctorId, LocalDateTime time, String description);
+    void addVisitToPatient(Long patientId, Long doctorId, LocalDateTime time, String description);
 
-    public List<PatientEntity> findPatientsByLastName(String lastName);
+    List<PatientEntity> findPatientsByLastName(String lastName);
 
-    public List<PatientEntity> findPatientsByMinNumberOfVisits(long minNumberOfPatientVisits);
+    List<PatientEntity> findPatientsByMinNumberOfVisits(long minNumberOfPatientVisits);
 
-    public List<PatientEntity> findPatientsByIsAdult(Boolean isPatientAdult);
+    List<PatientEntity> findPatientsByIsAdult(Boolean isPatientAdult);
 
 }

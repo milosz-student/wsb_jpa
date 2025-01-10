@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -78,7 +77,7 @@ public class AddressDaoTest
     }
 
     @Test
-    public void testShoultThrowOptimisticLockException() {
+    public void testShouldThrowOptimisticLockException() {
         //given
         EntityManager entityManager1 = entityManagerFactory.createEntityManager();
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();

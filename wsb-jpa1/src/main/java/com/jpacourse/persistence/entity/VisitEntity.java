@@ -30,6 +30,8 @@ public class VisitEntity {
 	@JoinColumn(name = "PATIENT_ID", nullable = false)
 	private PatientEntity patient;
 
+	private Integer price;
+
 	public Long getId() {
 		return id;
 	}
